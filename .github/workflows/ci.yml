@@ -29,8 +29,8 @@ jobs:
       run: mix deps.get
 #     - name: Set Formatting
 #       run: mix format --check-formatted
-    - name: Set credo
-      run: mix credo 
+#     - name: Set credo
+#       run: mix credo 
     - name: Run tests
       run: mix test
     - name: Run Dialyzer
