@@ -85,9 +85,9 @@ defmodule Poeticoins.Exchanges.CoinbaseClient do
   @spec message_to_trade(map()) :: {:ok, Trade.t()} | {:error, any()}
   def message_to_trade(msg) do
     with :ok <- validade_required(msg, ["product_id", "time", "price", "last_size"]),
-         {:ok, traded_at, _} <- DateTime.from_iso8601(msg["time"])
-    do
+         {:ok, traded_at, _} <- DateTime.from_iso8601(msg["time"]) do
       currency_pair = msg["product_id"]
+
       Trade.new(
         product: Product.new(@exchange_name, currency_pair),
         price: msg["price"],
@@ -95,7 +95,7 @@ defmodule Poeticoins.Exchanges.CoinbaseClient do
         traded_at: traded_at
       )
     else
-      {:error, _reason}=error -> error
+      {:error, _reason} = error -> error
     end
   end
 
@@ -103,9 +103,10 @@ defmodule Poeticoins.Exchanges.CoinbaseClient do
   def validade_required(msg, keys) do
     required_key =
       keys
-      |> Enum.find(& is_nil(msg[&1]))
+      |> Enum.find(&is_nil(msg[&1]))
 
-    if is_nil(required_key), do: :ok,
-    else: {:error, {required_key, :required}}
+    if is_nil(required_key),
+      do: :ok,
+      else: {:error, {required_key, :required}}
   end
 end
